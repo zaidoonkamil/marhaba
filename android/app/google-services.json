@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "364532245165",
+    "project_id": "booking-26e22",
+    "storage_bucket": "booking-26e22.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:364532245165:android:9dbaa992d69caabc6f5c24",
+        "android_client_info": {
+          "package_name": "com.zaidoon.marhaban"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYHUwYDN13s4HL9MZZ6Fez7pEiwUjO8LM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
