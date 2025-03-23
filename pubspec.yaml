@@ -26,6 +26,7 @@ dependencies:
   url_launcher:
   firebase_pagination: ^4.1.0
   card_loading: ^0.3.2
+  dio:
 
 
 dev_dependencies:

@@ -40,15 +40,13 @@ class Details extends StatelessWidget {
     return BlocProvider(
       create: (context)=> BookingAppCubit(),
       child: BlocConsumer<BookingAppCubit, BookingAppStates>(
-        listener: (context,state){
-
-        },
+        listener: (context,state){},
       builder: (context,index){
         var cubit = BookingAppCubit.get(context);
         return SafeArea(
         child: Scaffold(
           body: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
+            physics: AlwaysScrollableScrollPhysics(),
             child: Column(
               children: [
                 SizedBox(height: 22,),
@@ -56,7 +54,6 @@ class Details extends StatelessWidget {
                   children: [
                     CarouselSlider(
                       items:images.map((entry) {
-                        // String imagePath = entry.image.toString();
                         return Builder(
                           builder: (BuildContext context) {
                             return SizedBox(
@@ -65,7 +62,7 @@ class Details extends StatelessWidget {
                                 borderRadius:
                                 BorderRadius.circular(10.0),
                                 child: Image.network(
-                                  entry,
+                                  "http://10.0.2.2:3000/uploads/$entry",
                                   fit: BoxFit.fill,
                                 ),
                               ),
@@ -226,7 +223,6 @@ class Details extends StatelessWidget {
                             showToast(
                               text: e.toString(),
                               color: Colors.red,
-                              context: context,
                             );
                           });
                         },

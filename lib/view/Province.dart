@@ -55,12 +55,7 @@ class Province extends StatelessWidget {
                             children: [
                               GestureDetector(
                                 onTap: (){
-                                  filter=province[index];
-                                  cubit.booking=[];
-                                  cubit.lastDocument = null;
-                                  //   cubit.bookingFarmFunc(name: title);
-                                  cubit.homeImageState();
-                                  navigateAndFinish(context, Booking(title: title));
+                                  navigateAndFinish(context, Booking(title: title, province: province[index],));
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(

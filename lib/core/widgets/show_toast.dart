@@ -4,7 +4,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 void showToast({
   required String text,
   required Color color,
-  required BuildContext context,
 }) =>
     Fluttertoast.showToast(
       msg: text,

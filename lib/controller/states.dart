@@ -13,10 +13,11 @@ class ImageHomeErrorState extends BookingAppStates {
   ImageHomeErrorState(this.error);
 }
 
-class FarmLoadingState extends BookingAppStates {}
-class FarmSuccessState extends BookingAppStates {}
-class FarmErrorState extends BookingAppStates {
-  final String error;
 
-  FarmErrorState(this.error);
-}
+class AdsLoadingState extends BookingAppStates {}
+class AdsSuccessState extends BookingAppStates {}
+class AdsErrorState extends BookingAppStates {}
+
+class BookingLoadingState extends BookingAppStates {}
+class BookingSuccessState extends BookingAppStates {}
+class BookingErrorState extends BookingAppStates {}

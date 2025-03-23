@@ -26,14 +26,13 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context)=> BookingAppCubit()..fetchImages(),
+        create: (context)=> BookingAppCubit()..getAds(),
     child: BlocConsumer<BookingAppCubit, BookingAppStates>(
       listener: (context, state) {
         if(state is ImageHomeErrorState){
           showToast(
               text: state.error,
               color: Colors.red,
-              context: context,
           );
         }
       },
@@ -42,7 +41,7 @@ class HomeScreen extends StatelessWidget {
       return SafeArea(
             child: Scaffold(
               body: SingleChildScrollView(
-                physics: BouncingScrollPhysics(),
+                physics: AlwaysScrollableScrollPhysics(),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 25),
                   child: Column(
@@ -70,15 +69,16 @@ class HomeScreen extends StatelessWidget {
                       ),
                       SizedBox(height: 22,),
                       ConditionalBuilder(
-                        condition: cubit.state is ImageHomeSuccessState || cubit.state is HomeImageState,
+                        condition: cubit.state is AdsErrorState || cubit.state is AdsSuccessState || cubit.state is HomeImageState ,
                         builder:(c){
                           return ConditionalBuilder(
-                              condition: imageUrls.isNotEmpty,
+                              condition: cubit.getAdsModel.isNotEmpty,
                               builder: (context){
                                 return Column(
                                   children: [
                                     CarouselSlider(
-                                      items:imageUrls.map((entry) {
+                                      items: cubit.getAdsModel.expand((entry) =>
+                                          entry.images.map((imageUrl) {
                                         return Builder(
                                           builder: (BuildContext context) {
                                             return SizedBox(
@@ -87,14 +87,14 @@ class HomeScreen extends StatelessWidget {
                                                 borderRadius:
                                                 BorderRadius.circular(10.0),
                                                 child: Image.network(
-                                                  entry,
+                                                  "http://10.0.2.2:3000/uploads/$imageUrl",
                                                   fit: BoxFit.fill,
                                                 ),
                                               ),
                                             );
                                           },
-                                        );
-                                      }).toList(),
+                                        );},
+                                )).toList(),
                                       options: CarouselOptions(
                                         height: 160,
                                         viewportFraction: 0.85,
@@ -118,7 +118,7 @@ class HomeScreen extends StatelessWidget {
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       crossAxisAlignment: CrossAxisAlignment.end,
-                                      children: imageUrls.asMap().entries.map((entry) {
+                                      children: cubit.getAdsModel.asMap().entries.map((entry) {
                                         return GestureDetector(
                                           onTap: () {
                                             carouselController.animateTo(
@@ -163,6 +163,7 @@ class HomeScreen extends StatelessWidget {
                               color2:  Color(0XFF5BA7FF),
                               onTap: (){
                                 navigateTo(context, Booking(
+                                  province: '',
                                   title: 'حجز المزارع',),
                                 );
                               },
@@ -170,6 +171,7 @@ class HomeScreen extends StatelessWidget {
                             CardHome(
                               onTap: (){
                                 navigateTo(context, Booking(
+                                  province: '',
                                   title: 'حجز القاعات',),
                                 );
                               },
@@ -182,6 +184,7 @@ class HomeScreen extends StatelessWidget {
                             CardHome(
                               onTap: (){
                                 navigateTo(context, Booking(
+                                  province: '',
                                   title: 'حجز الفساتين',),
                                 );
                               },
@@ -194,7 +197,9 @@ class HomeScreen extends StatelessWidget {
                             CardHome(
                               onTap: (){
                                 navigateTo(context, Booking(
-                                  title: 'اقسام اخرئ',),
+                                  title: 'اقسام اخرئ',
+                                  province: '',
+                                ),
                                 );
                               },
                               title: 'حجز كوشـــات\nجلسات تصوير\nو اقسام اخــرئ',
