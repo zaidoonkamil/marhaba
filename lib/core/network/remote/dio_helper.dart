@@ -1,7 +1,6 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 
+String url='https://backend.khaleeafashion.com';
 
 class DioHelper {
   static Dio? dio;
@@ -10,7 +9,7 @@ class DioHelper {
   {
     dio = Dio(
       BaseOptions(
-        baseUrl: 'http://10.0.2.2:3000',
+        baseUrl: url,
         receiveDataWhenStatusError: true,
       ),
     );

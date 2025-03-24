@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../controller/states.dart';
+import '../core/network/remote/dio_helper.dart';
 import '../core/widgets/show_toast.dart';
 import 'Province.dart';
 
@@ -187,7 +188,7 @@ class Booking extends StatelessWidget {
                                                               ClipRRect(
                                                                 borderRadius: BorderRadius.circular(8),
                                                                 child: Image.network(
-                                                                  "http://10.0.2.2:3000/uploads/${cubit.getBookingModel[index].images[0]}",
+                                                                  "$url/uploads/${cubit.getBookingModel[index].images[0]}",
                                                                   width: 110,
                                                                   height: 110,
                                                                   fit: BoxFit.cover,

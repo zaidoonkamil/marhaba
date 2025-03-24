@@ -7,6 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../controller/cubit.dart';
 import '../controller/states.dart';
+import '../core/network/remote/dio_helper.dart';
 import '../core/widgets/show_toast.dart';
 
 
@@ -62,7 +63,7 @@ class Details extends StatelessWidget {
                                 borderRadius:
                                 BorderRadius.circular(10.0),
                                 child: Image.network(
-                                  "http://10.0.2.2:3000/uploads/$entry",
+                                  "$url/uploads/$entry",
                                   fit: BoxFit.fill,
                                 ),
                               ),

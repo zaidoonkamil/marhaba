@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../controller/cubit.dart';
 import '../controller/states.dart';
 import '../core/Constant.dart';
+import '../core/network/remote/dio_helper.dart';
 import '../core/widgets/CircularProgress.dart';
 import '../core/widgets/show_toast.dart';
 
@@ -87,7 +88,7 @@ class HomeScreen extends StatelessWidget {
                                                 borderRadius:
                                                 BorderRadius.circular(10.0),
                                                 child: Image.network(
-                                                  "http://10.0.2.2:3000/uploads/$imageUrl",
+                                                  "$url/uploads/$imageUrl",
                                                   fit: BoxFit.fill,
                                                 ),
                                               ),
