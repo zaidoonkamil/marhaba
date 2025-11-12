@@ -1,22 +1,17 @@
 import 'package:aa/controller/cubit.dart';
-import 'package:aa/core/Constant.dart';
+import 'package:aa/controller/states.dart';
 import 'package:aa/core/Navigation.dart';
+import 'package:aa/core/network/remote/dio_helper.dart';
 import 'package:aa/core/widgets/CircularProgress.dart';
-import 'package:aa/view/Details.dart';
-import 'package:aa/view/HomeScreen.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../controller/states.dart';
-import '../controller/states.dart';
-import '../core/navigation_bar/navigation_bar.dart';
-import '../core/network/remote/dio_helper.dart';
-import '../core/widgets/show_toast.dart';
-import 'Province.dart';
+import 'Details.dart';
+import 'HomeScreen.dart';
 
 class Booking extends StatelessWidget {
-  const Booking({super.key, required this.title,required this.province,});
+  const Booking({super.key, required this.title, required this.province,});
 
   final String title;
   final String province;
@@ -26,20 +21,21 @@ class Booking extends StatelessWidget {
     return BlocProvider(
       create:(c)=>BookingAppCubit()..getBooking(
         province: province,
-        name: title,),
+        name: title,
+      ),
       child: BlocConsumer<BookingAppCubit,BookingAppStates>(
           listener: (context,state){},
           builder: (context,index){
             var cubit = BookingAppCubit.get(context);
             return WillPopScope(
               onWillPop: () async {
-                navigateAndFinish(context,BottomNavBar());
+                navigateAndFinish(context,HomeScreen());
                 return true;
               },
               child: SafeArea(
                 child: Scaffold(
                   body: SingleChildScrollView(
-                    physics: AlwaysScrollableScrollPhysics(),
+                    physics: BouncingScrollPhysics(),
                     child: Padding(
                       padding: const EdgeInsets.all(20.0),
                       child: Column(
@@ -62,34 +58,11 @@ class Booking extends StatelessWidget {
                             ],
                           ),
                           SizedBox(height: 20,),
-                          GestureDetector(
-                            onTap: (){
-                                 navigateTo(context, Province(title: title,));
-                            },
-                            child: Container(
-                              width: double.maxFinite,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: primaryColor,
-                                  width: 2,
-                                ),
-                                borderRadius: BorderRadius.circular(12),
-                                color: Colors.white,
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 10),
-                                child: Text('فلتر حسب المحافظة',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(color: primaryColor),),
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 16,),
                           ConditionalBuilder(
-                              condition: cubit.state is BookingSuccessState ,
+                            condition: cubit.state is BookingSuccessState ,
                               builder: (c){
                                 return ConditionalBuilder(
-                                    condition:cubit.getBookingModel.isNotEmpty,
+                                  condition:cubit.getBookingModel.isNotEmpty,
                                     builder: (c){
                                       return ListView.builder(
                                           shrinkWrap: true,
@@ -101,15 +74,14 @@ class Booking extends StatelessWidget {
                                                 GestureDetector(
                                                   onTap: (){
                                                     navigateTo(context,
-                                                        Details(
-                                                          title: cubit.getBookingModel[index].title,
-                                                          images: cubit.getBookingModel[index].images,
-                                                          price: cubit.getBookingModel[index].price,
-                                                          desc: cubit.getBookingModel[index].desc,
-                                                          province: cubit.getBookingModel[index].province,
-                                                          phone: cubit.getBookingModel[index].phone,
-                                                        ),
-                                                    );
+                                                      Details(
+                                                        title: cubit.getBookingModel[index].title,
+                                                        images: cubit.getBookingModel[index].images,
+                                                        price: cubit.getBookingModel[index].price,
+                                                        desc: cubit.getBookingModel[index].desc,
+                                                        province: cubit.getBookingModel[index].province,
+                                                        phone: cubit.getBookingModel[index].phone,
+                                                      ),);
                                                   },
                                                   child: Container(
                                                     decoration: BoxDecoration(
@@ -172,17 +144,38 @@ class Booking extends StatelessWidget {
                                                                           ],
                                                                         ),
                                                                       ),
-
                                                                     ],
                                                                   ),
                                                                   SizedBox(height: 10,),
                                                                   Row(
-                                                                    mainAxisAlignment: MainAxisAlignment.end,
-                                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                     children: [
-                                                                      Expanded(child: Text(cubit.getBookingModel[index].phone,style: TextStyle(fontSize: 14),textAlign: TextAlign.end,)),
-                                                                      SizedBox(width: 4,),
-                                                                      Image.asset('assets/images/solar_phone-outline (1).png',scale: 1.2,)
+                                                                      Row(
+                                                                        children: [
+                                                                          InkWell(
+                                                                            onTap: (){
+                                                                              cubit.deleteBooking(
+                                                                                id: cubit.getBookingModel[index].id.toString(),
+                                                                              );
+                                                                              // cubit.getBookingModel.removeWhere((item) => item.id == cubit.getBookingModel[index].id);
+                                                                            },
+                                                                            child: Container(
+                                                                                padding: EdgeInsets.symmetric(horizontal: 20,vertical: 1),
+                                                                                decoration: BoxDecoration(
+                                                                                  borderRadius: BorderRadius.circular(4),
+                                                                                  color: Color(0XFFFF5D60),
+                                                                                ),
+                                                                                child: Icon(Icons.delete,color: Colors.white,)),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                      Row(
+                                                                        children: [
+                                                                          Text(cubit.getBookingModel[index].phone,textAlign: TextAlign.end,),
+                                                                          SizedBox(width: 4,),
+                                                                          Image.asset('assets/images/solar_phone-outline (1).png',scale: 1.2,)
+                                                                        ],
+                                                                      ),
                                                                     ],
                                                                   ),
                                                                 ],),
@@ -194,8 +187,8 @@ class Booking extends StatelessWidget {
                                                                 borderRadius: BorderRadius.circular(8),
                                                                 child: Image.network(
                                                                   "$url/uploads/${cubit.getBookingModel[index].images[0]}",
-                                                                  width: 100,
-                                                                  height: 100,
+                                                                  width: 110,
+                                                                  height: 110,
                                                                   fit: BoxFit.cover,
                                                                 ),
                                                               ),
@@ -217,9 +210,9 @@ class Booking extends StatelessWidget {
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
                                             Expanded(
-                                              child: Text('لا يوجد بيانات ليتم عرضهى',
+                                              child: Text('حدث خطأ اثناء جلب البيانات',
                                                 style: TextStyle(
-                                                  fontSize: 14,
+                                                  fontSize: 20,
                                                 ),
                                                 textAlign: TextAlign.center,
                                               ),

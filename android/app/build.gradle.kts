@@ -31,11 +31,11 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.zaidoon.marhaban"
+        applicationId = "com.napol.marhaba"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 3
+        versionName = "3.0"
     }
 
     signingConfigs {

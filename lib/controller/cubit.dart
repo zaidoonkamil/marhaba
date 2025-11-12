@@ -3,10 +3,13 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../core/Constant.dart';
 import '../core/network/remote/dio_helper.dart';
 import '../core/widgets/show_toast.dart';
 import '../model/GetAdsModel.dart';
 import '../model/GetBookingModel.dart';
+import '../model/PendingModel.dart';
+import '../model/ProfileModel.dart';
 
 class BookingAppCubit extends Cubit<BookingAppStates> {
   BookingAppCubit() : super(BookingAppInitialState());
@@ -15,6 +18,84 @@ class BookingAppCubit extends Cubit<BookingAppStates> {
 
   void homeImageState() {
     emit(HomeImageState());
+  }
+
+  ProfileModel? profileModel;
+  void getProfile({required BuildContext context,}) {
+    emit(GetProfileLoadingState());
+    DioHelper.getData(
+      url: '/profile',
+      token: token,
+    ).then((value) {
+      profileModel = ProfileModel.fromJson(value.data);
+      emit(GetProfileSuccessState());
+    }).catchError((error) {
+      if (error is DioError) {
+        showToast(text: error.toString(),
+          color: Colors.red,);
+        print(error.toString());
+        emit(GetProfileErrorState());
+      } else {
+        print("Unknown Error: $error");
+      }
+    });
+  }
+
+  void deleteAds({required String id}) {
+    emit(AdsLoadingState());
+    DioHelper.deleteData(
+      url: '/ads/$id',
+    ).then((value) {
+      getAdsModel.removeWhere((ad) => ad.id.toString() == id);
+      emit(AdsSuccessState());
+    }).catchError((error) {
+      if (error is DioError) {
+        showToast(text: error.toString(), color: Colors.redAccent);
+        print(error.toString());
+        emit(AdsErrorState());
+      }else {
+        print("Unknown Error: $error");
+      }
+    });
+  }
+
+  void deleteBooking({required String id}) {
+    emit(BookingLoadingState());
+    DioHelper.deleteData(
+      url: '/$duc/$id',
+    ).then((value) {
+      getBookingModel.removeWhere((ad) => ad.id.toString() == id);
+      emit(BookingSuccessState());
+    }).catchError((error) {
+      if (error is DioError) {
+        showToast(text: error.toString(), color: Colors.redAccent);
+        print(error.toString());
+        emit(BookingErrorState());
+      }else {
+        print("Unknown Error: $error");
+      }
+    });
+  }
+
+  void updateState({required String id,required String type,required String state,}) {
+    emit(UpdateStateLoadingState());
+    DioHelper.patchData(
+      url: '/$type/$id',
+      data: {
+        "status": state,
+      }
+    ).then((value) {
+      pendingModelModel.removeWhere((pending) => pending.id.toString() == id);
+      emit(UpdateStateSuccessState());
+    }).catchError((error) {
+      if (error is DioError) {
+        showToast(text: error.toString(), color: Colors.redAccent);
+        print(error.toString());
+        emit(UpdateStateErrorState());
+      }else {
+        print("Unknown Error: $error");
+      }
+    });
   }
 
   List<GetAds> getAdsModel = [];
@@ -48,6 +129,8 @@ class BookingAppCubit extends Cubit<BookingAppStates> {
         duc = 'hall';
       }else if(name=='اقسام اخرئ'){
         duc='anothe';
+      }else if(name=='سياحة وسفر'){
+        duc='tourism';
       } else {
         duc = 'adress';
       }
@@ -63,6 +146,27 @@ class BookingAppCubit extends Cubit<BookingAppStates> {
         showToast(text: error.toString(), color: Colors.redAccent);
         print(error.toString());
         emit(BookingErrorState());
+      }else {
+        print("Unknown Error: $error");
+      }
+    });
+  }
+
+  List<PendingModel> pendingModelModel = [];
+  void getPending() {
+    emit(PendingLoadingState());
+    DioHelper.getData(
+      url: '/pending-all',
+    ).then((value) {
+      pendingModelModel = (value.data as List)
+          .map((item) => PendingModel.fromJson
+        (item as Map<String, dynamic>)).toList();
+      emit(PendingSuccessState());
+    }).catchError((error) {
+      if (error is DioError) {
+        showToast(text: error.toString(), color: Colors.redAccent);
+        print(error.toString());
+        emit(PendingErrorState());
       }else {
         print("Unknown Error: $error");
       }

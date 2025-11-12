@@ -18,6 +18,18 @@ class AdsLoadingState extends BookingAppStates {}
 class AdsSuccessState extends BookingAppStates {}
 class AdsErrorState extends BookingAppStates {}
 
+class GetProfileLoadingState extends BookingAppStates {}
+class GetProfileSuccessState extends BookingAppStates {}
+class GetProfileErrorState extends BookingAppStates {}
+
 class BookingLoadingState extends BookingAppStates {}
 class BookingSuccessState extends BookingAppStates {}
 class BookingErrorState extends BookingAppStates {}
+
+class PendingLoadingState extends BookingAppStates {}
+class PendingSuccessState extends BookingAppStates {}
+class PendingErrorState extends BookingAppStates {}
+
+class UpdateStateLoadingState extends BookingAppStates {}
+class UpdateStateSuccessState extends BookingAppStates {}
+class UpdateStateErrorState extends BookingAppStates {}

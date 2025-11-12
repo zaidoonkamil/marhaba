@@ -1,7 +1,11 @@
+import 'package:aa/admin/view/home.dart';
 import 'package:aa/view/HomeScreen.dart';
 import 'package:flutter/material.dart';
 
+import '../auth/view/login.dart';
+import '../core/Constant.dart';
 import '../core/Navigation.dart';
+import '../core/navigation_bar/navigation_bar.dart';
 import '../core/network/local/cache_helper.dart';
 import 'OnBoarding.dart';
 
@@ -18,10 +22,27 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(const Duration(seconds: 1), () {
       Widget? widget;
       bool? onBoarding = CacheHelper.getData(key: 'onBoarding');
-      if (onBoarding != null) {
-        widget = const HomeScreen();
-      } else {
-        widget = OnBoarding();
+      if(CacheHelper.getData(key: 'token') == null){
+        token='';
+        if (onBoarding == true) {
+          widget = const Login();
+        } else {
+          widget = OnBoarding();
+        }
+      }else{
+        if(CacheHelper.getData(key: 'role') == null){
+          widget = const Login();
+          adminOrUser='user';
+        }else{
+          adminOrUser = CacheHelper.getData(key: 'role');
+          if (adminOrUser == 'admin') {
+            widget = Home();
+          }else{
+            widget = BottomNavBar();
+          }
+        }
+        token = CacheHelper.getData(key: 'token') ;
+        id = CacheHelper.getData(key: 'id') ??'' ;
       }
       navigateAndFinish(context, widget);
     });

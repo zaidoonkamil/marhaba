@@ -36,14 +36,14 @@ class CardHome extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
+                      Image.asset(image),
                       Text(title,style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold
                       ),
-                      textAlign: TextAlign.center,
+                        textAlign: TextAlign.center,
                       ),
-                      Image.asset(image)
                     ],
                   ),
                 ),
@@ -64,9 +64,10 @@ class CardHome extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Container(
+                            padding: EdgeInsets.all(2),
                             decoration: BoxDecoration(
                               color: Color(0XFFFF5D60),
-                              borderRadius: BorderRadius.circular(2)
+                              borderRadius: BorderRadius.circular(6)
                             ),
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
@@ -75,18 +76,17 @@ class CardHome extends StatelessWidget {
                               child: Text('انتقل الان',
                                 style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 12,
+                                    fontSize: 10,
                                 ),),
                             ),
                           ),
-                          SizedBox(width: 20,),
-                          Container(
-                            width: 220,
+                          SizedBox(width: 2,),
+                          Expanded(
                             child: Text(desc,
                               textAlign: TextAlign.end,
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 10,
+                                fontSize: 9,
                                 fontWeight: FontWeight.normal
                             ),),
                           ),

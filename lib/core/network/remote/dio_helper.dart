@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-String url='https://backend.khaleeafashion.com';
+String url='https://marhaba.khaleeafashion.com';
 
 class DioHelper {
   static Dio? dio;
@@ -76,6 +76,27 @@ class DioHelper {
     };
 
     return dio!.put(
+      url,
+      queryParameters: query,
+      data: data,
+    );
+  }
+
+  static Future<Response> patchData({
+    required String url,
+    Map<String, dynamic>? data,
+    Map<String, dynamic>? query,
+    String? token,
+  }) async
+  {
+    dio!.options.headers =
+    {
+      'Authorization': token??'',
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    };
+
+    return dio!.patch(
       url,
       queryParameters: query,
       data: data,

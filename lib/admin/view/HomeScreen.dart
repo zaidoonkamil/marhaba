@@ -1,48 +1,36 @@
+import 'package:aa/admin/view/home.dart';
+import 'package:aa/controller/cubit.dart';
+import 'package:aa/controller/states.dart';
 import 'package:aa/core/Navigation.dart';
-import 'package:aa/core/widgets/Card_Home.dart';
-import 'package:aa/view/Booking.dart';
+import 'package:aa/core/network/remote/dio_helper.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../controller/cubit.dart';
-import '../controller/states.dart';
-import '../core/Constant.dart';
-import '../core/network/remote/dio_helper.dart';
-import '../core/widgets/CircularProgress.dart';
-import '../core/widgets/show_toast.dart';
+import '../../core/Constant.dart';
+import '../../core/widgets/Card_Home.dart';
+import '../../core/widgets/CircularProgress.dart';
+import 'Booking.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   static CarouselController carouselController = CarouselController();
-  static const List<String> stringWithoutBrackets = [
-    'assets/images/Rectangle 27.png',
-    'assets/images/Rectangle 27 (1).png',
-    'assets/images/Rectangle 27 (2).png',
-  ];
   static int currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context)=> BookingAppCubit()..getAds(),
+      create: (context)=> BookingAppCubit()..getAds(),
     child: BlocConsumer<BookingAppCubit, BookingAppStates>(
-      listener: (context, state) {
-        if(state is ImageHomeErrorState){
-          showToast(
-              text: state.error,
-              color: Colors.red,
-          );
-        }
-      },
+      listener: (context, state) {},
       builder: (context,index){
       var cubit = BookingAppCubit.get(context);
       return SafeArea(
             child: Scaffold(
               body: SingleChildScrollView(
-                physics: AlwaysScrollableScrollPhysics(),
+                physics: BouncingScrollPhysics(),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 25),
                   child: Column(
@@ -50,21 +38,36 @@ class HomeScreen extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 22,),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
+                            GestureDetector(
+                              onTap: (){
+                                navigateAndFinish(context, Home());
+                              },
+                              child: Icon(
+                                Icons.arrow_back_ios_new,
+                                color: Colors.black87,
+                                size: 26,
+                              ),
+                            ),
+                            Row(
                               children: [
-                                Text('مرحبا',style: TextStyle(
-                                  fontSize: 20,
-                                ),textAlign: TextAlign.end,),
-                                Text('بعودتك مجددا',style: TextStyle(
-                                  fontSize: 12,
-                                ),),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Text('مرحبا',style: TextStyle(
+                                      fontSize: 20,
+                                    ),textAlign: TextAlign.end,),
+                                    Text('بعودتك مجددا',style: TextStyle(
+                                      fontSize: 12,
+                                    ),),
+                                  ],
+                                ),
+                                SizedBox(width: 4,),
+                                Image.asset('assets/images/logo.png',scale: 5,),
                               ],
                             ),
-                            SizedBox(width: 4,),
-                            Image.asset('assets/images/logo.png',scale: 5,),
+
                           ],
                         ),
                       ),
@@ -73,53 +76,74 @@ class HomeScreen extends StatelessWidget {
                         condition: cubit.state is AdsErrorState || cubit.state is AdsSuccessState || cubit.state is HomeImageState ,
                         builder:(c){
                           return ConditionalBuilder(
-                              condition: cubit.getAdsModel.isNotEmpty,
+                            condition: cubit.getAdsModel.isNotEmpty,
                               builder: (context){
                                 return Column(
                                   children: [
-                                    CarouselSlider(
-                                      items: cubit.getAdsModel.expand((entry) =>
-                                          entry.images.map((imageUrl) {
-                                        return Builder(
-                                          builder: (BuildContext context) {
-                                            return SizedBox(
-                                              width: double.maxFinite,
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                BorderRadius.circular(10.0),
-                                                child: Image.network(
-                                                  "$url/uploads/$imageUrl",
-                                                  fit: BoxFit.fill,
-                                                ),
-                                              ),
+                                    Stack(
+                                      children: [
+                                        CarouselSlider(
+                                          items: cubit.getAdsModel.expand((entry) =>
+                                              entry.images.map((imageUrl) {
+                                            return Builder(
+                                              builder: (BuildContext context) {
+                                                return SizedBox(
+                                                  width: double.maxFinite,
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                                    child: Image.network(
+                                                      "$url/uploads/$imageUrl",
+                                                      fit: BoxFit.fill,
+                                                    ),
+                                                  ),
+                                                );
+                                              },
                                             );
-                                          },
-                                        );},
-                                )).toList(),
-                                      options: CarouselOptions(
-                                        height: 160,
-                                        viewportFraction: 0.85,
-                                        enlargeCenterPage: true,
-                                        initialPage: 0,
-                                        enableInfiniteScroll: true,
-                                        reverse: true,
-                                        autoPlay: true,
-                                        autoPlayInterval: const Duration(seconds: 6),
-                                        autoPlayAnimationDuration:
-                                        const Duration(seconds: 1),
-                                        autoPlayCurve: Curves.fastOutSlowIn,
-                                        scrollDirection: Axis.horizontal,
-                                        onPageChanged: (index, reason) {
-                                          currentIndex=index;
-                                          cubit.homeImageState();
-                                        },
-                                      ),
+                                          })).toList(),
+                                          options: CarouselOptions(
+                                            height: 160,
+                                            viewportFraction: 0.85,
+                                            enlargeCenterPage: true,
+                                            initialPage: 0,
+                                            enableInfiniteScroll: true,
+                                            reverse: true,
+                                            autoPlay: true,
+                                            autoPlayInterval: const Duration(seconds: 6),
+                                            autoPlayAnimationDuration:
+                                            const Duration(seconds: 1),
+                                            autoPlayCurve: Curves.fastOutSlowIn,
+                                            scrollDirection: Axis.horizontal,
+                                            onPageChanged: (index, reason) {
+                                              currentIndex=index;
+                                              cubit.homeImageState();
+                                            },
+                                          ),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            InkWell(
+                                              onTap: (){
+                                                cubit.deleteAds(id: cubit.getAdsModel[currentIndex].id.toString());
+                                              },
+                                              child: Container(
+                                                  padding: EdgeInsets.symmetric(horizontal: 20,vertical: 1),
+                                                  decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.circular(4),
+                                                    color: Color(0XFFFF5D60),
+                                                  ),
+                                                  child: Icon(Icons.delete,color: Colors.white,)),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
                                     SizedBox(height: 8,),
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       crossAxisAlignment: CrossAxisAlignment.end,
-                                      children: cubit.getAdsModel.asMap().entries.map((entry) {
+                                      children: imageUrls.asMap().entries.map((entry) {
                                         return GestureDetector(
                                           onTap: () {
                                             carouselController.animateTo(
@@ -171,10 +195,7 @@ class HomeScreen extends StatelessWidget {
                             ),
                             CardHome(
                               onTap: (){
-                                navigateTo(context, Booking(
-                                  province: '',
-                                  title: 'حجز القاعات',),
-                                );
+                                navigateTo(context, Booking(province: '', title: 'حجز القاعات',),);
                               },
                               title: 'حجز قاعات\nاعــــــراس\nومناسبـات',
                               desc: 'حفلتك تستحق الأفضل! احجز القاعة المثالية لمناسبتك الخاصة واجعل لحظاتك لا تُنســـــى',

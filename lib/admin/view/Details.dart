@@ -1,14 +1,11 @@
+import 'package:aa/controller/cubit.dart';
+import 'package:aa/controller/states.dart';
 import 'package:aa/core/Constant.dart';
 import 'package:aa/core/Navigation.dart';
+import 'package:aa/core/network/remote/dio_helper.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:url_launcher/url_launcher.dart';
-
-import '../controller/cubit.dart';
-import '../controller/states.dart';
-import '../core/network/remote/dio_helper.dart';
-import '../core/widgets/show_toast.dart';
 
 
 class Details extends StatelessWidget {
@@ -41,13 +38,15 @@ class Details extends StatelessWidget {
     return BlocProvider(
       create: (context)=> BookingAppCubit(),
       child: BlocConsumer<BookingAppCubit, BookingAppStates>(
-        listener: (context,state){},
+        listener: (context,state){
+
+        },
       builder: (context,index){
         var cubit = BookingAppCubit.get(context);
         return SafeArea(
         child: Scaffold(
           body: SingleChildScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
+            physics: BouncingScrollPhysics(),
             child: Column(
               children: [
                 SizedBox(height: 22,),
@@ -55,6 +54,7 @@ class Details extends StatelessWidget {
                   children: [
                     CarouselSlider(
                       items:images.map((entry) {
+                        // String imagePath = entry.image.toString();
                         return Builder(
                           builder: (BuildContext context) {
                             return SizedBox(
@@ -187,7 +187,7 @@ class Details extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 4),
+                                  padding: const EdgeInsets.symmetric(vertical: 2),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -195,8 +195,8 @@ class Details extends StatelessWidget {
                                         padding: const EdgeInsets.only(bottom: 2.0),
                                         child: Row(
                                           children: [
-                                            Text('د.ع',style: TextStyle(color: Colors.white,fontSize: 16),),
-                                            Text(price,style: TextStyle(color: Colors.white,fontSize: 16),),
+                                            Text('د.ع',style: TextStyle(color: Colors.white,fontSize: 20),),
+                                            Text(price,style: TextStyle(color: Colors.white,fontSize: 20),),
                                           ],
                                         ),
                                       ),
@@ -211,44 +211,23 @@ class Details extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 12,),
-                      GestureDetector(
-                        onTap: ()async {
-                          final phoneNumber = phone.trim();
-                          final url =
-                              'https://wa.me/+964$phoneNumber?text=';
-                          await launch(
-                          url,
-                          enableJavaScript: true,
-                          // forceWebView: true,
-                          ).catchError((e) {
-                            showToast(
-                              text: e.toString(),
-                              color: Colors.red,
-                            );
-                          });
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 12.0),
-                          padding: const EdgeInsets.symmetric(vertical: 4.0),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.green,
-                              width: 2,
-                            ),
-                            color: Color(0xFF22C05D),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 2),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 2.0),
-                                  child: Text('تواصل واتساب',style: TextStyle(color: Colors.white,fontSize: 14),),
-                                ),
-                              ],
-                            ),
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 12.0),
+                        padding: const EdgeInsets.symmetric(vertical: 4.0),
+                        decoration: BoxDecoration(
+                          color: Color(0xFF22C05D),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 2),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 2.0),
+                                child: Text(phone,style: TextStyle(color: Colors.white,fontSize: 20),),
+                              ),
+                            ],
                           ),
                         ),
                       ),

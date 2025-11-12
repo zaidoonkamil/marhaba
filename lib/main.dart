@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
       title: 'Booking app',
       theme: ThemeService().lightTheme,
       themeMode: ThemeMode.light,
-      home: const SplashScreen(), //SplashScreen(),
+      home: const SplashScreen(), 
     );
   }
 }
