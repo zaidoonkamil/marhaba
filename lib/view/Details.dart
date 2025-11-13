@@ -212,40 +212,91 @@ class Details extends StatelessWidget {
                       ),
                       SizedBox(height: 12,),
                       GestureDetector(
-                        onTap: ()async {
-                          final phoneNumber = phone.trim();
-                          final url =
-                              'https://wa.me/+964$phoneNumber?text=';
-                          await launch(
-                          url,
-                          enableJavaScript: true,
-                          // forceWebView: true,
-                          ).catchError((e) {
-                            showToast(
-                              text: e.toString(),
-                              color: Colors.red,
-                            );
-                          });
+                        onTap: () {
+                          showModalBottomSheet(
+                            context: context,
+                            backgroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                            ),
+                            builder: (context) {
+                              return Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      'تأكيد الحجز',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      'يمكنك إتمام الحجز عبر واتساب للتواصل مباشرة مع الجهة المختصة.',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(fontSize: 15, color: Colors.black54),
+                                    ),
+                                    const SizedBox(height: 20),
+                                    ElevatedButton.icon(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Color(0xFF22C05D),
+                                        foregroundColor: Colors.white,
+                                        minimumSize: Size(double.infinity, 50),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                      ),
+                                      label: Text(
+                                        'تأكيد الحجز عبر واتساب',
+                                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                      ),
+                                      onPressed: () async {
+                                        Navigator.pop(context);
+                                        final phoneNumber = phone.trim();
+                                        final url = 'https://wa.me/+964$phoneNumber?text=';
+                                        try {
+                                          await launch(url, enableJavaScript: true);
+                                        } catch (e) {
+                                          showToast(
+                                            text: e.toString(),
+                                            color: Colors.red,
+                                          );
+                                        }
+                                      },
+                                    ),
+                                    const SizedBox(height: 10),
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: Text('إلغاء', style: TextStyle(color: Colors.red)),
+                                    ),
+                                    const SizedBox(height: 10),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
                         },
                         child: Container(
                           margin: const EdgeInsets.symmetric(horizontal: 12.0),
                           padding: const EdgeInsets.symmetric(vertical: 4.0),
                           decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.green,
-                              width: 2,
-                            ),
+                            border: Border.all(color: Colors.green, width: 2),
                             color: Color(0xFF22C05D),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 2),
+                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 2),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.only(bottom: 2.0),
-                                  child: Text('تواصل واتساب',style: TextStyle(color: Colors.white,fontSize: 14),),
+                                  child: Text(
+                                    'حجز الآن',
+                                    style: TextStyle(color: Colors.white, fontSize: 14),
+                                  ),
                                 ),
                               ],
                             ),

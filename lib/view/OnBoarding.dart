@@ -1,8 +1,8 @@
 import 'package:aa/core/Constant.dart';
-import 'package:aa/view/HomeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_onboard/flutter_onboard.dart';
 
+import '../auth/view/login.dart';
 import '../core/Navigation.dart';
 import '../core/network/local/cache_helper.dart';
 
@@ -20,11 +20,11 @@ class OnBoarding extends StatelessWidget {
           pageController: _pageController,
           onSkip: () {
             CacheHelper.saveData(key: 'onBoarding',value: true );
-            navigateAndFinish(context, const HomeScreen());
+            navigateAndFinish(context, const Login());
           },
           onDone: () {
             CacheHelper.saveData(key: 'onBoarding',value: true );
-            navigateAndFinish(context, const HomeScreen());
+            navigateAndFinish(context, const Login());
           },
           onBoardData: onBoardData,
           titleStyles: TextStyle(
@@ -48,7 +48,7 @@ class OnBoarding extends StatelessWidget {
           skipButton: TextButton(
             onPressed: () {
                CacheHelper.saveData(key: 'onBoarding',value: true );
-              navigateAndFinish(context, const HomeScreen());
+              navigateAndFinish(context, const Login());
             },
             child: Text(
               "التالي",
@@ -96,7 +96,7 @@ class OnBoarding extends StatelessWidget {
       );
     } else {
        CacheHelper.saveData(key: 'onBoarding',value: true );
-      navigateAndFinish(context, const HomeScreen());
+      navigateAndFinish(context, const Login());
     }
   }
 }
