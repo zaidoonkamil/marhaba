@@ -110,17 +110,17 @@ class Register extends StatelessWidget {
 
                           ],
                         ),
-                        const SizedBox(height: 16),
-                        CustomTextField(
-                          controller: locationController,
-                          hintText: 'الموقع',
-                          prefixIcon: Icons.location_on_outlined,
-                          validate: (String? value) {
-                            if (value!.isEmpty) {
-                              return 'رجائا اخل الرمز السري';
-                            }
-                          },
-                        ),
+                        // const SizedBox(height: 16),
+                        // CustomTextField(
+                        //   controller: locationController,
+                        //   hintText: 'الموقع',
+                        //   prefixIcon: Icons.location_on_outlined,
+                        //   validate: (String? value) {
+                        //     if (value!.isEmpty) {
+                        //       return 'رجائا اخل الرمز السري';
+                        //     }
+                        //   },
+                        // ),
                         const SizedBox(height: 16),
                         CustomTextField(
                           controller: passwordController,
@@ -174,7 +174,7 @@ class Register extends StatelessWidget {
                                       cubit.signUp(
                                         name: userNameController.text.trim(),
                                         phone: phoneController.text.trim(),
-                                        location: locationController.text.trim(),
+                                        location: 'بعقوبة',
                                         password: passwordController.text.trim(),
                                         role: 'user',
                                         context: context,

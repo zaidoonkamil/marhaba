@@ -31,8 +31,8 @@ class BookingAppCubit extends Cubit<BookingAppStates> {
       emit(GetProfileSuccessState());
     }).catchError((error) {
       if (error is DioError) {
-        showToast(text: error.toString(),
-          color: Colors.red,);
+        // showToast(text: error.toString(),
+        //   color: Colors.red,);
         print(error.toString());
         emit(GetProfileErrorState());
       } else {

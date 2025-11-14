@@ -1,3 +1,4 @@
+import 'package:aa/auth/view/login.dart';
 import 'package:aa/controller/states.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,25 @@ class Profile extends StatelessWidget {
           var cubit=BookingAppCubit.get(context);
           return SafeArea(
             child: Scaffold(
-              body: ConditionalBuilder(
+              body: token == ''? Center(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: primaryColor,
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  onPressed: () {
+                    navigateTo(context, Login());
+                  },
+                  child: Text(
+                    "سجّل الدخول أولًا",
+                    style: TextStyle(color: Colors.white, fontSize: 12),
+                  ),
+                ),
+              )
+                  :ConditionalBuilder(
                   condition:  cubit.profileModel != null,
                   builder: (context){
                     return Column(
@@ -112,28 +131,28 @@ class Profile extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 8,),
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 12),
-                                decoration: BoxDecoration(
-                                  color: Color(0XFFF9FAFA),
-                                  borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(
-                                    color: Colors.grey.shade300 ,
-                                    width: 1,
-                                  ),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 12),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      FaIcon(FontAwesomeIcons.location,color: primaryColor, size: 20),
-                                      Text(cubit.profileModel!.location.toString(),style: TextStyle(color: Color(0XFF949D9E)),),
-                                    ],
-                                  ),
-                                ),
-                              ),
+                              // SizedBox(height: 8,),
+                              // Container(
+                              //   padding: const EdgeInsets.symmetric(horizontal: 12),
+                              //   decoration: BoxDecoration(
+                              //     color: Color(0XFFF9FAFA),
+                              //     borderRadius: BorderRadius.circular(8),
+                              //     border: Border.all(
+                              //       color: Colors.grey.shade300 ,
+                              //       width: 1,
+                              //     ),
+                              //   ),
+                              //   child: Padding(
+                              //     padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 12),
+                              //     child: Row(
+                              //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              //       children: [
+                              //         FaIcon(FontAwesomeIcons.location,color: primaryColor, size: 20),
+                              //         Text(cubit.profileModel!.location.toString(),style: TextStyle(color: Color(0XFF949D9E)),),
+                              //       ],
+                              //     ),
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),
@@ -196,7 +215,7 @@ class Profile extends StatelessWidget {
                                         color: primaryColor,
                                       ),
                                     ),
-                                    SizedBox(width: 20,height: 10,),
+                                    SizedBox(width: 0,height: 2,),
                                   ],
                                 ),
                               ),
@@ -261,7 +280,7 @@ class Profile extends StatelessWidget {
                                         color: primaryColor,
                                       ),
                                     ),
-                                    SizedBox(width: 20,height: 10,),
+                                    SizedBox(width: 0,height: 10,),
                                   ],
                                 ),
                               ),

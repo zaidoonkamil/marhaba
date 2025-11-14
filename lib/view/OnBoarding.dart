@@ -4,6 +4,7 @@ import 'package:flutter_onboard/flutter_onboard.dart';
 
 import '../auth/view/login.dart';
 import '../core/Navigation.dart';
+import '../core/navigation_bar/navigation_bar.dart';
 import '../core/network/local/cache_helper.dart';
 
 class OnBoarding extends StatelessWidget {
@@ -20,11 +21,11 @@ class OnBoarding extends StatelessWidget {
           pageController: _pageController,
           onSkip: () {
             CacheHelper.saveData(key: 'onBoarding',value: true );
-            navigateAndFinish(context, const Login());
+            navigateAndFinish(context, BottomNavBar());
           },
           onDone: () {
             CacheHelper.saveData(key: 'onBoarding',value: true );
-            navigateAndFinish(context, const Login());
+            navigateAndFinish(context, BottomNavBar());
           },
           onBoardData: onBoardData,
           titleStyles: TextStyle(
@@ -48,7 +49,7 @@ class OnBoarding extends StatelessWidget {
           skipButton: TextButton(
             onPressed: () {
                CacheHelper.saveData(key: 'onBoarding',value: true );
-              navigateAndFinish(context, const Login());
+              navigateAndFinish(context, BottomNavBar());
             },
             child: Text(
               "التالي",
@@ -96,7 +97,7 @@ class OnBoarding extends StatelessWidget {
       );
     } else {
        CacheHelper.saveData(key: 'onBoarding',value: true );
-      navigateAndFinish(context, const Login());
+      navigateAndFinish(context, BottomNavBar());
     }
   }
 }

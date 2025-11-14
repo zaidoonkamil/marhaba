@@ -303,6 +303,105 @@ class Details extends StatelessWidget {
                           ),
                         ),
                       ),
+                      SizedBox(height: 12),
+                      GestureDetector(
+                        onTap: () {
+                          showModalBottomSheet(
+                            context: context,
+                            backgroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                            ),
+                            builder: (context) {
+                              double rating = 0;
+
+                              return StatefulBuilder(
+                                builder: (context, setState) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          'تقييم الخدمة',
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        SizedBox(height: 15),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: List.generate(5, (index) {
+                                            return IconButton(
+                                              icon: Icon(
+                                                index < rating ? Icons.star : Icons.star_border,
+                                                color: Colors.amber,
+                                                size: 32,
+                                              ),
+                                              onPressed: () {
+                                                setState(() {
+                                                  rating = index + 1.0;
+                                                });
+                                              },
+                                            );
+                                          }),
+                                        ),
+                                        SizedBox(height: 20),
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: primaryColor,
+                                            foregroundColor: Colors.white,
+                                            minimumSize: Size(double.infinity, 48),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(10),
+                                            ),
+                                          ),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                            showToast(
+                                              text: 'تم إرسال تقييمك بنجاح',
+                                              color: Colors.green,
+                                            );
+                                          },
+                                          child: Text(
+                                            'إرسال التقييم',
+                                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+
+                                        SizedBox(height: 10),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          );
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 12.0),
+                          padding: const EdgeInsets.symmetric(vertical: 4.0),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.amber, width: 2),
+                            color: Colors.amber,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 2),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'قيّم الخدمة',
+                                  style: TextStyle(color: Colors.white, fontSize: 14),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 20,),
                     ],
                   ),
                 ),

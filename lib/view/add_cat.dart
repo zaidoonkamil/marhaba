@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../auth/view/login.dart';
 import '../core/Constant.dart';
+import '../core/Navigation.dart';
 import '../core/widgets/custom_text_field.dart';
 
 class AddCatUser extends StatefulWidget {
@@ -107,7 +109,24 @@ class _AddCatUserState extends State<AddCatUser> {
     return SafeArea(
       child: Scaffold(
         body: Center(
-          child: Form(
+          child: token == ''? Center(
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: primaryColor,
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              onPressed: () {
+                navigateTo(context, Login());
+              },
+              child: Text(
+                "سجّل الدخول أولًا",
+                style: TextStyle(color: Colors.white, fontSize: 12),
+              ),
+            ),
+          ):Form(
             key: formKey,
             child: SingleChildScrollView(
               child: Column(
