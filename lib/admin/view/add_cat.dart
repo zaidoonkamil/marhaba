@@ -58,7 +58,8 @@ class _AddCatState extends State<AddCat> {
         "price": priceController.text.trim(),
         "province": provinceController.text.trim(),
         "phone": phoneController.text.trim(),
-        "status": "pending",
+        "status": "accepted",
+
       });
       for (var file in selectedImages) {
         formData.files.add(
