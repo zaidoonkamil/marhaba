@@ -14,6 +14,8 @@ import '../core/widgets/show_toast.dart';
 class Details extends StatelessWidget {
   const Details({
     super.key,
+    required this.productType,
+    required this.productId,
     required this.title,
     required this.images,
     required this.price,
@@ -29,6 +31,8 @@ class Details extends StatelessWidget {
   ];
   static CarouselController carouselController = CarouselController();
   static int currentIndex = 0;
+  final String productType;
+  final String productId;
   final String title;
   final List<String> images;
   final String price;
@@ -234,7 +238,7 @@ class Details extends StatelessWidget {
                                     ),
                                     const SizedBox(height: 10),
                                     Text(
-                                      'يمكنك إتمام الحجز عبر واتساب للتواصل مباشرة مع الجهة المختصة.',
+                                      'يمكنك إتمام الحجز و بعدها تواصل واتساب مباشرة مع الجهة المختصة',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(fontSize: 15, color: Colors.black54),
                                     ),
@@ -249,21 +253,64 @@ class Details extends StatelessWidget {
                                         ),
                                       ),
                                       label: Text(
-                                        'تأكيد الحجز عبر واتساب',
+                                        'تأكيد الحجز',
                                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                                       ),
                                       onPressed: () async {
                                         Navigator.pop(context);
-                                        final phoneNumber = phone.trim();
-                                        final url = 'https://wa.me/+964$phoneNumber?text=';
-                                        try {
-                                          await launch(url, enableJavaScript: true);
-                                        } catch (e) {
-                                          showToast(
-                                            text: e.toString(),
-                                            color: Colors.red,
-                                          );
-                                        }
+                                        showToast(text: 'تم الحجز', color: Colors.green);
+
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) => AlertDialog(
+                                            backgroundColor: Colors.white,
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                                            title: const Text(
+                                              "إرسال الحجز",
+                                              textAlign: TextAlign.center,
+                                            ),
+                                            content: const Text(
+                                              "هل تريد إرسال تفاصيل الحجز عبر واتساب وتتجنب النتضار؟",
+                                              textAlign: TextAlign.center,
+                                            ),
+                                            actionsAlignment: MainAxisAlignment.center,
+                                            actions: [
+                                              ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor: Colors.green,
+                                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                                ),
+                                                onPressed: () async {
+                                                  Navigator.pop(context);
+
+                                                  final phoneNumber = phone.trim();
+                                                  final url = "https://wa.me/+964$phoneNumber?text=";
+
+                                                  try {
+                                                    await launch(url, enableJavaScript: true);
+                                                  } catch (e) {
+                                                    showToast(
+                                                      text: e.toString(),
+                                                      color: Colors.red,
+                                                    );
+                                                  }
+                                                },
+                                                child: const Text(
+                                                  "إرسال عبر واتساب",
+                                                  style: TextStyle(color: Colors.white),
+                                                ),
+                                              ),
+
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: const Text("إلغاء",style: TextStyle(color: Colors.red),),
+                                              ),
+
+                                            ],
+                                          ),
+                                        );
                                       },
                                     ),
                                     const SizedBox(height: 10),
@@ -297,6 +344,43 @@ class Details extends StatelessWidget {
                                     'حجز الآن',
                                     style: TextStyle(color: Colors.white, fontSize: 14),
                                   ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 12),
+                      GestureDetector(
+                        onTap: () async {
+                          final phoneNumber = phone.trim();
+                          final url = "https://wa.me/+964$phoneNumber?text=";
+
+                          try {
+                            await launch(url, enableJavaScript: true);
+                          } catch (e) {
+                            showToast(
+                              text: e.toString(),
+                              color: Colors.red,
+                            );
+                          }
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 12.0),
+                          padding: const EdgeInsets.symmetric(vertical: 4.0),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.blue, width: 2),
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 2),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'مراسلة مباشرة عبر واتساب',
+                                  style: TextStyle(color: Colors.white, fontSize: 14),
                                 ),
                               ],
                             ),

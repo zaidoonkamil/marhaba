@@ -173,88 +173,32 @@ class BookingAppCubit extends Cubit<BookingAppStates> {
     });
   }
 
+  void postBooking({required String ownerId,required String productId,required String productType, }) {
+    emit(PostBookingLoadingState());
+    DioHelper.postData(
+      url: '/booking',
+      data: {
+        'userId':id,
+        'ownerId':ownerId,
+        'productId':productId,
+        'productType':productType,
+      }
+    ).then((value) {
+
+      emit(PostBookingSuccessState());
+    }).catchError((error) {
+      if (error is DioError) {
+        showToast(text: error.toString(), color: Colors.redAccent);
+        print(error.toString());
+        emit(PostBookingErrorState());
+      }else {
+        print("Unknown Error: $error");
+      }
+    });
+  }
+
+
 }
 
 String filter='';
 List<String> imageUrls = [];
-
-// final FirebaseFirestore firestore =
-//     FirebaseFirestore.instance;
-//
-// Future<void> fetchImages() async {
-//   try {
-//       emit(ImageHomeLoadingState());
-//       QuerySnapshot snapshot = await firestore.
-//       collection("ads").get();
-//
-//       List<String> urls = snapshot.docs
-//           .map((doc) => doc["image"] as String).toList();
-//       imageUrls = urls;
-//       emit(ImageHomeSuccessState());
-//   } catch (e) {
-//     emit(ImageHomeErrorState("Error fetching images: $e"));
-//   }
-// }
-
-//
-// bool isLoading = false;
-// String duc='';
-// List<BookingFarm> booking = [];
-// String currentCategory = '';
-// DocumentSnapshot? lastDocument;
-//
-//
-//
-// Future<void> bookingFarmFunc({required String name, String? newFilter}) async {
-//   if (isLoading) return;
-//
-//   if (newFilter != null) {
-//     filter = newFilter;
-//     booking.clear();
-//     lastDocument = null;
-//   }
-//
-//   if (name == 'حجز المزارع') {
-//     duc = 'farm';
-//   } else if (name == 'حجز القاعات') {
-//     duc = 'Suits';
-//   }else if(name=='اقسام اخرئ'){
-//     duc='Other';
-//   } else {
-//     duc = 'hall';
-//   }
-//
-//   isLoading = true;
-//   emit(HomeImageState());
-//
-//   Query query = FirebaseFirestore.instance.collection(duc);
-//
-//   if (filter.isNotEmpty) {
-//     query = query.where('province', isEqualTo: filter);
-//   }
-//
-//   if (lastDocument != null) {
-//     query = query.startAfterDocument(lastDocument!);
-//   }
-//
-//   QuerySnapshot snapshot = await query.limit(5).get();
-//
-//   if (snapshot.docs.isNotEmpty) {
-//     lastDocument = snapshot.docs.last;
-//     List<BookingFarm> newFarms = snapshot.docs.map((doc) {
-//       return BookingFarm(
-//         title: doc["title"],
-//         images: List<String>.from(doc["image"]),
-//         price: doc["price"],
-//         desc: doc["desc"],
-//         province: doc["province"],
-//         phone: doc["phone"],
-//       );
-//     }).toList();
-//
-//     booking.addAll(newFarms);
-//   }
-//
-//   isLoading = false;
-//   if (!isClosed) emit(FarmSuccessState());
-// }

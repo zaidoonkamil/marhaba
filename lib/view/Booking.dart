@@ -100,8 +100,22 @@ class Booking extends StatelessWidget {
                                               children: [
                                                 GestureDetector(
                                                   onTap: (){
+                                                    String duc='';
+                                                    if (title == 'حجز المزارع') {
+                                                      duc = 'farm';
+                                                    } else if (title == 'حجز القاعات') {
+                                                      duc = 'hall';
+                                                    }else if(title=='اقسام اخرئ'){
+                                                      duc='anothe';
+                                                    }else if(title=='سياحة وسفر'){
+                                                      duc='tourism';
+                                                    } else {
+                                                      duc = 'adress';
+                                                    }
                                                     navigateTo(context,
                                                         Details(
+                                                          productType: duc,
+                                                          productId: cubit.getBookingModel[index].id.toString(),
                                                           title: cubit.getBookingModel[index].title,
                                                           images: cubit.getBookingModel[index].images,
                                                           price: cubit.getBookingModel[index].price,

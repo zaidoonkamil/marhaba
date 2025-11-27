@@ -30,6 +30,10 @@ class PendingLoadingState extends BookingAppStates {}
 class PendingSuccessState extends BookingAppStates {}
 class PendingErrorState extends BookingAppStates {}
 
+class PostBookingLoadingState extends BookingAppStates {}
+class PostBookingSuccessState extends BookingAppStates {}
+class PostBookingErrorState extends BookingAppStates {}
+
 class UpdateStateLoadingState extends BookingAppStates {}
 class UpdateStateSuccessState extends BookingAppStates {}
 class UpdateStateErrorState extends BookingAppStates {}
